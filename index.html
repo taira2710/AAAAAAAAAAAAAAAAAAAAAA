@@ -21,6 +21,9 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #334155;
     }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-[#0b0f19] text-gray-100 font-sans flex flex-col items-center">
@@ -110,10 +113,10 @@
                 ステップ 1: 現在のチームの時期・フェーズ
               </label>
               <select id="season-select" class="w-full bg-[#0f1424] border border-slate-700 rounded-lg p-2.5 text-xs text-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500">
-                <option value="autumn" selected>秋（新チーム始動期：基礎土台の構築）</option>
-                <option value="winter">冬（個・組織の土台作り：肉体＆戦術連動）</option>
-                <option value="spring">春（実戦突破期：完成度と勝負強さ向上）</option>
-                <option value="summer">夏（インターハイ本選：日本一への挑戦）</option>
+                <option value="summer" selected>夏（試合なし：徹底体力・技術基礎構築）</option>
+                <option value="autumn">秋（11月から試合：連携力・戦術組織化）</option>
+                <option value="winter">冬（冬の試合期：コンタクトDF・2次速攻）</option>
+                <option value="spring">春（5月末最後の総体：チーム完成度・IH予選）</option>
               </select>
             </div>
 
@@ -135,6 +138,20 @@
           </form>
         </div>
 
+        <!-- 成果チェック＆相談室へのクイックリンク -->
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="switchTab('check')" class="bg-gradient-to-br from-emerald-950 to-slate-900 border border-emerald-500/20 rounded-xl p-3 text-left">
+            <span class="text-lg block">✅</span>
+            <span class="text-xs font-bold text-emerald-400 block mt-1">成果チェック</span>
+            <span class="text-[9px] text-gray-400 block mt-0.5">今日の達成度を登録</span>
+          </button>
+          <button onclick="switchTab('chat')" class="bg-gradient-to-br from-indigo-950 to-slate-900 border border-indigo-500/20 rounded-xl p-3 text-left">
+            <span class="text-lg block">💬</span>
+            <span class="text-xs font-bold text-indigo-400 block mt-1">AI相談室</span>
+            <span class="text-[9px] text-gray-400 block mt-0.5">ハンドの悩みを質問</span>
+          </button>
+        </div>
+
         <!-- メリット＆使い方のガイドライン -->
         <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-800 text-xs space-y-2.5 text-gray-400">
           <h4 class="font-bold text-gray-200 flex items-center space-x-1">
@@ -145,6 +162,7 @@
             <li>戦術盤イラストと全国レベル意識ポイントを徹底共有して実践。</li>
             <li>練習後、キャプテンを中心に「成果チェック」を1タップ入力。</li>
             <li>達成度に応じて、AIが自動で翌日の練習メニューを個別調整！</li>
+            <li>戦術やポジショニングに悩んだら「AI相談室」でいつでも即時解説。</li>
           </ol>
         </div>
       </section>
@@ -186,7 +204,7 @@
               <span id="time-wup" class="text-[10px] font-mono text-gray-500">00:00 - 00:20 (20分)</span>
               <h4 class="text-xs font-bold text-gray-200 mt-0.5">W-up: ダイナミックストレッチ ＆ フットワーク</h4>
               <p class="text-[11px] text-gray-400 mt-1">
-                ハンドボールに必要な股関節と肩甲骨の可動域を広げ、アジリティを高めるアスタリスクフットワーク。
+                ハンドボールに必要な股関節 and 肩甲骨の可動域を広げ、アジリティを高めるアスタリスクフットワーク。
               </p>
             </div>
           </div>
@@ -390,7 +408,68 @@
 
       </section>
 
-      <!-- ④ 成果チェック画面 (tab-check) -->
+      <!-- ④ 年間スケジュール計画画面 (tab-annual) -->
+      <section id="tab-annual" class="space-y-5 hidden">
+        <!-- 年間計画ヘッダー -->
+        <div class="bg-gradient-to-r from-red-900/40 via-slate-900 to-slate-950 border border-red-500/20 rounded-2xl p-4">
+          <p class="text-[10px] text-red-400 font-bold uppercase tracking-wider">ANNUAL TIMELINE PLAN</p>
+          <h3 class="text-sm font-black text-white mt-1 leading-snug">
+            Road to IH：12ヶ月の年間逆算スケジュール
+          </h3>
+          <p class="text-[11px] text-gray-400 mt-1">
+            新チームが動き出す「夏」から、インターハイ本戦直前「春」まで。1年を通していつ何を徹底的に磨くべきかの年間全体設計です。
+          </p>
+        </div>
+
+        <!-- タイムライン縦軸コンテナ -->
+        <div id="annual-timeline-container" class="space-y-4 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-800">
+          <!-- JSでここに動的な12ヶ月分のタイムラインが挿入されます -->
+        </div>
+      </section>
+
+      <!-- ⑤ AI相談室（Q&A質問ページ） (tab-chat) -->
+      <section id="tab-chat" class="space-y-4 hidden flex flex-col h-[calc(100vh-140px)]">
+        <!-- AIコーチのプロフィール -->
+        <div class="bg-gradient-to-r from-red-950/45 to-indigo-950/45 border border-slate-800 rounded-2xl p-3 flex items-center space-x-3 shadow-lg">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center font-black text-lg text-white shadow-md shrink-0">
+            AI
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white flex items-center space-x-1">
+              <span>専属AIコーチ タクヤ</span>
+              <span class="bg-red-500/20 text-red-400 border border-red-500/20 px-1 py-0.2 rounded text-[8px] font-mono font-bold">ONLINE</span>
+            </h4>
+            <p class="text-[9px] text-gray-400 mt-0.5">全国基準の戦術・1on1技術・メンタル・チーム作りの疑問に答えます。</p>
+          </div>
+        </div>
+
+        <!-- クイック質問チップス -->
+        <div class="flex space-x-2 overflow-x-auto pb-1 shrink-0 scrollbar-none">
+          <button onclick="sendQuickQuestion('1on1で抜かれないディフェンスのコツは？')" class="bg-[#161d30] hover:bg-[#1f2945] text-[10px] text-gray-300 px-3 py-1.5 rounded-full border border-slate-800 whitespace-nowrap transition active:scale-95 shrink-0">🛡️ 1on1の防ぎ方</button>
+          <button onclick="sendQuickQuestion('速攻時のパスミスを減らしたい')" class="bg-[#161d30] hover:bg-[#1f2945] text-[10px] text-gray-300 px-3 py-1.5 rounded-full border border-slate-800 whitespace-nowrap transition active:scale-95 shrink-0">⚡ 速攻のミス撲滅</button>
+          <button onclick="sendQuickQuestion('シュートの決定率を上げるコツ')" class="bg-[#161d30] hover:bg-[#1f2945] text-[10px] text-gray-300 px-3 py-1.5 rounded-full border border-slate-800 whitespace-nowrap transition active:scale-95 shrink-0">🤾 シュート精度</button>
+          <button onclick="sendQuickQuestion('キャプテンとしてチームをまとめるには？')" class="bg-[#161d30] hover:bg-[#1f2945] text-[10px] text-gray-300 px-3 py-1.5 rounded-full border border-slate-800 whitespace-nowrap transition active:scale-95 shrink-0">👑 キャプテンの統率</button>
+        </div>
+
+        <!-- チャットログエリア -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto space-y-3 bg-[#0d1222] border border-slate-800 rounded-2xl p-3 text-xs min-h-[220px] max-h-[350px]">
+          <!-- 初期メッセージ (AI) -->
+          <div class="flex items-start space-x-2">
+            <div class="w-6 h-6 rounded-lg bg-red-600 flex items-center justify-center text-[9px] font-black text-white shrink-0 mt-0.5 shadow">AI</div>
+            <div class="bg-slate-800 text-gray-100 p-2.5 rounded-xl rounded-tl-none max-w-[85%] leading-relaxed shadow-sm">
+              お疲れ様です！IHを目指す選手の皆さん。戦術、DF姿勢、ポジション別（ポスト・GK・ウイング等）の動きから、キャプテンのリーダーシップの悩みまで、ハンドボールに関することなら何でも聞いてください！🏼🔥
+            </div>
+          </div>
+        </div>
+
+        <!-- 入力フォーム -->
+        <form id="chat-form" onsubmit="handleChatSubmit(event)" class="flex items-center space-x-2 shrink-0">
+          <input id="chat-input" type="text" autocomplete="off" placeholder="AIコーチに質問する... (例: 1on1, パスミス)" class="flex-1 bg-[#13192c] border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500">
+          <button type="submit" class="bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl hover:opacity-90 transition active:scale-95 shrink-0">送信</button>
+        </form>
+      </section>
+
+      <!-- ⑥ 成果チェック画面 (tab-check) -->
       <section id="tab-check" class="space-y-6 hidden">
         
         <!-- 今日のおさらいタイトル -->
@@ -437,32 +516,38 @@
     </main>
 
     <!-- ==========================================
-        BOTTOM NAVIGATION BAR
+        BOTTOM NAVIGATION BAR (5等分に最適化配置)
         ========================================== -->
-    <nav class="absolute bottom-0 left-0 right-0 bg-[#0c1122]/95 backdrop-blur border-t border-slate-800 grid grid-cols-4 py-2 text-center shadow-lg z-40">
+    <nav class="absolute bottom-0 left-0 right-0 bg-[#0c1122]/95 backdrop-blur border-t border-slate-800 grid grid-cols-5 py-2 text-center shadow-lg z-40">
       <!-- ホーム / 診断 -->
       <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center justify-center space-y-1 text-red-500">
-        <span class="text-lg">📋</span>
-        <span class="text-[9px] font-bold">診断/ホーム</span>
+        <span class="text-base">📋</span>
+        <span class="text-[8px] font-bold">診断/ホーム</span>
       </button>
 
       <!-- 今日の練習 -->
       <button id="nav-schedule" onclick="switchTab('schedule')" class="flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-gray-300 relative">
-        <span class="text-lg">⏱️</span>
-        <span class="text-[9px] font-bold">今日の練習</span>
-        <span id="nav-review-ping" class="absolute top-1 right-5 w-2 h-2 rounded-full bg-amber-500 animate-ping hidden"></span>
+        <span class="text-base">⏱️</span>
+        <span class="text-[8px] font-bold">今日の練習</span>
+        <span id="nav-review-ping" class="absolute top-1 right-3 w-2 h-2 rounded-full bg-amber-500 animate-ping hidden"></span>
       </button>
 
-      <!-- ロードマップ -->
+      <!-- 月間目標 -->
       <button id="nav-roadmap" onclick="switchTab('roadmap')" class="flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-gray-300">
-        <span class="text-lg">🗺️</span>
-        <span class="text-[9px] font-bold">ロードマップ</span>
+        <span class="text-base">🗺️</span>
+        <span class="text-[8px] font-bold">月間目標</span>
       </button>
 
-      <!-- 成果チェック -->
-      <button id="nav-check" onclick="switchTab('check')" class="flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-gray-300">
-        <span class="text-lg">✅</span>
-        <span class="text-[9px] font-bold">成果チェック</span>
+      <!-- 年間計画 -->
+      <button id="nav-annual" onclick="switchTab('annual')" class="flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-gray-300">
+        <span class="text-base">📅</span>
+        <span class="text-[8px] font-bold">年間計画</span>
+      </button>
+
+      <!-- AI相談室 (NEW) -->
+      <button id="nav-chat" onclick="switchTab('chat')" class="flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-gray-300">
+        <span class="text-base">💬</span>
+        <span class="text-[8px] font-bold">AI相談室</span>
       </button>
     </nav>
 
@@ -614,79 +699,178 @@
     // ロードマップデータ（診断時期×課題別）
     // ==========================================
     const ROADMAP_TEMPLATES = {
-      autumn: {
-        title: "秋：新チーム始動期「徹底的な基礎作りと約束事の共有」",
+      summer: {
+        title: "夏：試合なし徹底基礎期「フィジカルと個の技術の底上げ」",
         goals: [
           { id: "g1", text: "チーム全員がDFの基本スタンス（足を揃えず半身）をマスターする", done: true },
-          { id: "g2", text: "フットワークメニューを規定時間内にノーミスでクリアする", done: false },
-          { id: "g3", text: "ルーズボールやパスカットから1.5秒以内のファーストパス展開を共通認識にする", done: false },
-          { id: "g4", text: "公式戦を想定し、自分たちの共通戦術（戦術コード名）を2つ以上確立する", done: false }
+          { id: "g2", text: "猛暑下のフットワークメニューを全員が規定時間内にノーミスクリア", done: false },
+          { id: "g3", text: "当たり負けない体幹（プランク3分、コンタクト基礎）を構築する", done: false },
+          { id: "g4", text: "個人のシュートフォームとキーパーのポジショニングの基本を固める", done: false }
         ],
-        benchmark: "【全国基準目標】練習中のパスミス回数を「1セッション5回以内」に抑え、強豪校に並ぶ集中力を養う。"
+        benchmark: "【全国基準目標】公式戦のない夏のうちに「1試合走りきれる心肺機能」の土台を完全に構築する。"
+      },
+      autumn: {
+        title: "秋：11月公式戦スタート期「戦術コードの確立と1次速攻の完成」",
+        goals: [
+          { id: "g1", text: "チームの共通戦術（戦術コード名）を2つ以上実戦レベルにする", done: true },
+          { id: "g2", text: "ルーズボールやパスカットから1.5秒以内のファーストパス展開を徹底", done: false },
+          { id: "g3", text: "11月の公式戦（新人戦予選）において目標のスコア（失点20以下）を達成する", done: false },
+          { id: "g4", text: "隣のDFと緊密に連動してズレを作らせない声掛けスライドDFの徹底", done: false }
+        ],
+        benchmark: "【全国基準目標】練習中のパスミス回数を「1セッション5回以内」に抑え、11月の初陣を勝利で飾る。"
       },
       winter: {
-        title: "冬：個・組織の土台作り期「フィジカル強化と緊密な連動性」",
+        title: "冬：冬の試合期「コンタクト強度向上と2次速攻連動」",
         goals: [
-          { id: "g1", text: "コンタクト強度を上げ、試合を通して当たり負けない肉体と意識を作る", done: true },
-          { id: "g2", text: "相手の戦術（ダブルピヴォットなど）に対して試合中に臨機応変にDFをチェンジできる", done: false },
+          { id: "g1", text: "コンタクト強度を上げ、冬の厳しい試合を通して当たり負けない肉体と意識を作る", done: true },
+          { id: "g2", text: "相手のダブルピヴォット等の変則戦術に試合中にDFチェンジで対応する", done: false },
           { id: "g3", text: "速攻の二次攻撃（2次速攻）において、バックプレーヤーが適切なタイミングで波状参加できる", done: false },
           { id: "g4", text: "全員がシュート成功率65%以上を目指し、特にノーマークシュートを外さない", done: false }
         ],
-        benchmark: "【全国基準目標】1試合走りきれる心肺機能を獲得（シャトルラン目標値：平均115回超）"
+        benchmark: "【全国基準目標】冬の公式戦・カップ戦を勝ち抜き、シャトルラン平均115回超のスタミナをキープ。"
       },
       spring: {
-        title: "春：実戦・県予選突破期「戦術の精度極大化と勝負強さの追求」",
+        title: "春：5月末最後の総体期「チーム完成度の極大化とIH出場への執念」",
         goals: [
-          { id: "g1", text: "県上位校との練習試合で、DFの崩壊による連続失点を3点以内に留める", done: false },
-          { id: "g2", text: "マンツーマンDFや変則DFを仕掛けられた際、パニックにならずに即座に対応する", done: false },
-          { id: "g3", text: "7mスローのシューターを3人以上確立し、高い決定率（80%以上）をキープする", done: false },
-          { id: "g4", text: "試合終盤の「ラスト3分」におけるマイボール・相手ボールの状況別時間稼ぎ・得点パターン構築", done: false }
+          { id: "g1", text: "5月末の『最後の総体』を想定した、ラスト3分の時間コントロール・得点パターンの構築", done: false },
+          { id: "g2", text: "マンツーマンDFやプレスDFを仕掛けられた際、パニックにならずに即座に対応する", done: false },
+          { id: "g3", text: "7mスローのシューター決定率80%以上を高い集中力で維持する", done: false },
+          { id: "g4", text: "コート内外問わず「全員が主役」という強い結束を誇る状態を作る", done: false }
         ],
-        benchmark: "【全国基準目標】地区大会・県大会でシード権を獲得、平均失点「20点以下」に抑える強固なDF組織。"
-      },
-      summer: {
-        title: "夏：IH本選・最終調整期「全国での1勝、そして日本一への挑戦」",
-        goals: [
-          { id: "g1", text: "全国のメガパワー・高身長DFに対するシュートバリエーション（アンダーシュート、ブラインドシュート等）の確立", done: false },
-          { id: "g2", text: "連戦に耐え抜く徹底的なコンディショニングと怪我防止のセルフケア定着", done: false },
-          { id: "g3", text: "猛暑下の体育館でも40分間集中を維持する徹底した給水とメンタルコントロール", done: false },
-          { id: "g4", text: "チームが一丸となり、コート内外問わず「全員が主役」という強い結束を誇る状態", done: false }
-        ],
-        benchmark: "【全国基準目標】対戦相手の映像分析を1時間で行い、翌日の試合用の対策（相手エースの無力化計画）を即興で立てられる戦術脳。"
+        benchmark: "【全国基準目標】5月末の最後の総体で目標達成（IH出場資格、または地区ベスト4以上の獲得）。"
       }
     };
+
+    // ==========================================
+    // 年間スケジュール計画データ
+    // ==========================================
+    const ANNUAL_SCHEDULE = [
+      { month: "6月", season: "summer", theme: "新チーム始動・徹底基礎", desc: "3年生引退直後。徹底的な走り込みによる全身持久力とフットワーク。公式な試合はないため、個の技術の底上げに集中する。", milestone: "新キャプテンによるDF基本行動ルールの確立" },
+      { month: "7月", season: "summer", theme: "夏合宿・フィジカル強化", desc: "試合のない夏だからこそできる高強度トレーニング。猛暑に負けないスタミナと、接触に負けない強固な体幹作りを行う。", milestone: "体幹トレーニングメニューの全員規定時間クリア" },
+      { month: "8月", season: "summer", theme: "ポジション別技術・個の強化", desc: "試合なし。個々のシュートフォーム、キーパーの反応練習など、実戦で活きる個人専門スキルの向上期間。", milestone: "ノーマークシュートのフォーム安定と精度向上" },
+      { month: "9月", season: "autumn", theme: "チームオフェンス・DF組織化", desc: "秋の試合に向け、本格的なコンビネーション練習を開始。隣 of DFと連動してズレを作らせないDFのベース構築。", milestone: "サインプレー・戦術コードを2つ以上確立" },
+      { month: "10月", season: "autumn", theme: "実戦感覚の養成・テストマッチ", desc: "練習試合を重ねてチームの約束事を精査。11月からの公式戦を想定し、セットDFとセットオフェンスの精度を上げる。", milestone: "練習試合での失点を平均20点以下に抑える" },
+      { month: "11月", season: "autumn", theme: "秋の大会（新人戦地区予選）", desc: "いよいよ11月から公式試合がスタート！これまでの夏秋の厳しい練習がどれだけ通用するか、勝ちにこだわる実戦期。", milestone: "新人戦地区予選突破、県大会出場権の獲得" },
+      { month: "12月", season: "winter", theme: "冬の大会（県新人戦）・組織DF", desc: "冬も引き続き重要な試合期間。強豪チームが集まる県大会を想定。コンタクト強度を上げ、当たり負けない緊密な連動DFを作る。", milestone: "強豪校相手にコンタクト負けしない組織DFの確立" },
+      { month: "1.月", season: "winter", theme: "冬季選手権大会・2次速攻の連動", desc: "冬の激戦期。1次速攻で終わらせず、後ろから走り込んでくるバックプレーヤーとのスピード連携（波状攻撃）を磨き切る。", milestone: "ハーフコートからの速攻展開を10秒以内に完結" },
+      { month: "2月", season: "winter", theme: "冬 of 総括・シュート決定率向上", desc: "冬の公式試合を通して浮き彫りになった決定力不足の解消。極限の疲労下でもブレない精密なシュート技術を徹底習得。", milestone: "チーム全体のシュート決定率を75%以上に引き上げる" },
+      { month: "3月", season: "spring", theme: "春の強化期間・実戦力極大化", desc: "最後の総体に向けた強化大会や春合宿。相手の変則プレスDFやマンツーマンDFに対し、即座に機能する臨機応変な対策を徹底。", milestone: "県外強豪校とのテストマッチで安定した得点力を証明" },
+      { month: "4月", season: "spring", theme: "新メンバー合流・戦術の再整理", desc: "新入生がチームに合流。これまでの戦術言語やポジショニング原則を再共有し、最も勝率の高いスタメンパターンを精査。", milestone: "第2フォーメーションの機能化と約束事の再徹底" },
+      { month: "5月", season: "spring", theme: "【集大成】最後の総体（IH予選）", desc: "5月末に照準を合わせた、文字通り『最後の総体』。1年間の自律的な逆算カリキュラムの成果を全てぶつける勝負期。", milestone: "総体での目標達成（インターハイ本選出場、または地域ベスト4以上の獲得）" }
+    ];
 
     // ==========================================
     // アプリケーション状態
     // ==========================================
     let state = {
       currentTab: "home",
-      season: "autumn",
+      season: "summer", // 始動フェーズである夏に初期化
       focus: "defense",
       practiceType: "weekday",
       adaptiveState: "normal", // "normal" or "review"
       currentStepIndex: 0,
-      roadmapGoals: JSON.parse(JSON.stringify(ROADMAP_TEMPLATES.autumn.goals)), // ディープコピー
+      roadmapGoals: JSON.parse(JSON.stringify(ROADMAP_TEMPLATES.summer.goals)), // 夏のゴールに初期化
       videoIsPlaying: false,
       videoProgress: 0,
       videoInterval: null
     };
 
     // ==========================================
-    // ライフサイクル/初期化
+    // Q&A チャットボット回答集（実戦ハンドボール知能）
     // ==========================================
-    window.addEventListener("DOMContentLoaded", () => {
-      // 診断フォーム送信イベント
-      document.getElementById("diagnosis-form").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const selectedSeason = document.getElementById("season-select").value;
-        const selectedFocus = document.getElementById("focus-select").value;
-        handleDiagnosisSubmit(selectedSeason, selectedFocus);
-      });
+    const CHATBOT_RESPONSES = [
+      {
+        keywords: ["1on1", "1対1", "ディフェンス", "df", "守る", "抜かれ"],
+        reply: `🛡️ **1on1を制圧する3つの超重要ポイント（全国基準）**
 
-      // 初回レンダリング
-      updateUI();
-    });
+1. **骨盤コントロール（ヘソの向き）**
+オフェンスのフェイントは肩や頭で騙してきますが、彼らの「骨盤の向き」は嘘をつけません。相手のヘソの向きを常にマークし、移動ラインを先読みして足先を置きます。
+
+2. **手で押さず、胸（チェスト）で当たる**
+手だけで止めようとすると、滑り抜けられるか、プッシングのファウルを取られます。体幹を低く維持し、自分の胸骨の中心を相手の胸骨に真っ向から衝突させて推進力を吸収します（チェストコンタクト）。
+
+3. **コンタクト時の低空化**
+【全国基準】接触の瞬間、あえて腰の重心を「あと5cm」だけ真下に落とします。こうすることで下半身がブレず、相手のオフェンスの力を上に逃がして完全にストップできます。`
+      },
+      {
+        keywords: ["速攻", "パスカット", "カウンター", "パスミス", "キャッチ"],
+        reply: `⚡ **1.5秒で相手を粉砕する速攻（カウンター）の絶対ルール**
+
+1. **視野確保の「半身ラン（LW・RW）」**
+GKがボールを回収した瞬間、サイドの選手は背中を向けて全速疾走してはいけません。必ずボール（GK）を視界に半分残し、走りながらキャッチできる角度（半身）で爆走します。
+
+2. **胸ではなく「両手ハンドキャッチ」**
+胸に抱え込むキャッチをすると、ボールを次に送るまでに0.4秒のロスが生まれます。ボールが届く前に腕を少し伸ばし、ボールを両手の指先（スナップ）で吸い取るようにキャッチし、そのまま1ステップで放ちます。
+
+3. **トレイルランナー（2次速攻）の波状連動**
+1次速攻でシュートに行けなかった場合、後ろから全力で入ってくるバックプレーヤー（CBや45度）がスピードを緩めずに並走。10秒以内に相手DFが固まる前にフィニッシュします。`
+      },
+      {
+        keywords: ["シュート", "決定率", "シュートミス", "得点"],
+        reply: `🤾 **全国のゴールネットを揺らすシュート決定率向上の極意**
+
+1. **空中での「0.1秒のタメ」**
+高く跳び上がるだけでなく、跳躍の最高到達点で体を一瞬静止させ、キーパーが先に動くのを「待つ」空中制御（タメ）を作ります。体幹の強さが求められます。
+
+2. **ブラインドシュートの活用**
+DFの体を盾にして、キーパーの視界からボールリリースを隠します。キーパーはボールが見えた瞬間にはすでに反応が遅れています。
+
+3. **ジャンプ中の周辺視野スキャン**
+ジャンプ中にGKを凝視するのではなく、周辺視野（ボヤッと全体を見る視野）でGKのアークポジショニング（角度）を確認。空いている逆のサイドネットにスナップ手首だけで流し込みます。`
+      },
+      {
+        keywords: ["キャプテン", "主将", "チーム", "まとめる", "リーダー"],
+        reply: `👑 **IH出場校の主将が実践する「自律型チーム統率」のルール**
+
+1. **「なぜこの練習をやるのか」の納得感**
+「ただやれ」と言う指導は終わりです。キャプテンは練習前に『今日このメニューをクリアしたら、夏に失点を5点減らせる』という具体的な「なぜ（Why）」を共有してください。
+
+2. **役割を分散する**
+キャプテンが1人で抱え込んではいけません。「ディフェンスリーダー（DFの声掛け担当）」「オフェンスリーダー（サインプレー管理）」などの役割を作り、全員を主役にしてください。
+
+3. **練習終わりの「成果チェック」を本気でやる**
+今日設定したステップが「達成（⭕）」だったか「未達成（❌）」だったか、本音で話し合ってください。この『逆算と振り返り』を繰り返すことが、自律して勝つ集団になる近道です。`
+      },
+      {
+        keywords: ["セットオフェンス", "オフェンス", "パラレル", "ズレ"],
+        reply: `🔥 **組織DFをズタズタに裂くオフェンスの基本**
+
+1. **パラレルアタック（並走）**
+隣のプレーヤーが仕掛けて相手DFを引きつけた瞬間、そのDFの「隣の間（ギャップ）」に向かって、ボールを受け取る前からトップスピードで並走して走り込みます。
+
+2. **球離れ「0.5秒の原則」**
+ボールを捕ってから次のパスまでを0.5秒以内で行います。球離れが遅いとDFのスライドDFが間に合ってしまいます。
+
+3. **ポストとの「面合わせ」**
+ポストプレーヤーがDFをシール（体でブロック）し、45度やセンターが走り込めるクリーンなルート（レーン）を作り出します。`
+      },
+      {
+        keywords: ["ポスト", "ピヴォット"],
+        reply: `🩹 **コート上の泥臭い英雄：ポストプレイヤーの極意**
+
+1. **DFの「背後（ブラインドサイド）」をとる**
+DFの正面に突っ込んでは捕まります。DFがボールを見ている瞬間、その視野の死角（背後）にすっと位置取りをします。
+
+2. **シール（面をがっちり作る）**
+DFを体でブロックして動きを制限し、パサーに「ここにしかパスが来ない空間」をがっちり提示します。
+
+3. **片手キャッチの徹底**
+激しいコンタクトの中でも確実にキープできるよう、片手で受けても滑り落とさない強靭な手首と体幹を鍛えましょう。`
+      },
+      {
+        keywords: ["キーパー", "gk", "ゴールキーパー", "セーブ", "セービング"],
+        reply: `🧤 **失点を半減させるゴールキーパー（GK）の鉄則**
+
+1. **アークポジショニング（角度取り）**
+ゴールライン上に張り付かず、シュートエリアの角度（アーク）に合わせて1.5〜2m前に飛び出します。これでシューターから見えるシュート角の面積を物理的に半減できます。
+
+2. **手首への超集中**
+ボールではなく、シューターの「手首（リリース角度）」を集中して見つめます。手首のしなりから球筋をコンマ数秒早く感知します。
+
+3. **セーブから1.5秒のクイック配球**
+シュートを止めたら即座にサイドラインを見て走り出したLW/RWへ超ライナーパス。GKのシュートストップこそが「最強の攻撃」の起点です。`
+      }
+    ];
 
     // ==========================================
     // コアアクション/ハンドラー
@@ -843,6 +1027,107 @@
     }
 
     // ==========================================
+    // AI チャット相談室 ロジック (NEW)
+    // ==========================================
+    function handleChatSubmit(e) {
+      if (e) e.preventDefault();
+      const inputEl = document.getElementById("chat-input");
+      const query = inputEl.value.trim();
+      if (!query) return;
+
+      // 1. ユーザー発言をログに追加
+      appendChatMessage(query, "user");
+      inputEl.value = "";
+
+      // 2. AIの「考え中...」状態を表示
+      const loadingId = appendChatLoading();
+
+      // 3. 回答のマッチング
+      setTimeout(() => {
+        removeChatLoading(loadingId);
+        const lowerQuery = query.toLowerCase();
+        let answer = "";
+
+        // キーワード検索
+        for (const res of CHATBOT_RESPONSES) {
+          const match = res.keywords.some(keyword => lowerQuery.includes(keyword));
+          if (match) {
+            answer = res.reply;
+            break;
+          }
+        }
+
+        // デフォルトフォールバック
+        if (!answer) {
+          answer = `📋 **質問ありがとうございます！**
+
+ハンドボールで上達する上で、その観点は非常に重要です。
+
+アドバイスとして、まずは今日設定されている「${getFocusLabel(state.focus)}」の練習スケジュールを徹底し、特に **『全国基準の意識ポイント』** をコート上で実践してみてください。
+
+もし、「1on1」「ディフェンス」「速攻」「シュート」「キャプテン」「ポスト」「GK」などのキーワードを含めて質問していただくと、より具体的で専門的な戦術アドバイスを返信できます！🤾✨`;
+        }
+
+        appendChatMessage(answer, "ai");
+      }, 1200);
+    }
+
+    function sendQuickQuestion(text) {
+      document.getElementById("chat-input").value = text;
+      handleChatSubmit();
+    }
+
+    function appendChatMessage(text, sender) {
+      const logs = document.getElementById("chat-messages");
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "flex items-start space-x-2";
+
+      // 改行をbrタグに変換
+      const formattedText = text.replace(/\n/g, "<br>");
+
+      if (sender === "ai") {
+        msgDiv.innerHTML = `
+          <div class="w-6 h-6 rounded-lg bg-red-600 flex items-center justify-center text-[9px] font-black text-white shrink-0 mt-0.5 shadow">AI</div>
+          <div class="bg-slate-800 text-gray-100 p-2.5 rounded-xl rounded-tl-none max-w-[85%] leading-relaxed shadow-sm transition-all duration-300">
+            ${formattedText}
+          </div>
+        `;
+      } else {
+        msgDiv.className += " justify-end";
+        msgDiv.innerHTML = `
+          <div class="bg-red-600/20 text-red-100 border border-red-500/20 p-2.5 rounded-xl rounded-tr-none max-w-[85%] leading-relaxed shadow-sm">
+            ${formattedText}
+          </div>
+        `;
+      }
+
+      logs.appendChild(msgDiv);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    function appendChatLoading() {
+      const logs = document.getElementById("chat-messages");
+      const loadDiv = document.createElement("div");
+      const uniqueId = "loading-" + Date.now();
+      loadDiv.id = uniqueId;
+      loadDiv.className = "flex items-start space-x-2 animate-pulse";
+      loadDiv.innerHTML = `
+        <div class="w-6 h-6 rounded-lg bg-slate-700 flex items-center justify-center text-[9px] font-black text-gray-400 shrink-0 mt-0.5">AI</div>
+        <div class="bg-slate-800 text-gray-400 p-2.5 rounded-xl rounded-tl-none max-w-[85%] italic">
+          タクヤコーチが分析中... ⚡
+        </div>
+      `;
+      logs.appendChild(loadDiv);
+      logs.scrollTop = logs.scrollHeight;
+      return uniqueId;
+    }
+
+    function removeChatLoading(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    // ==========================================
     // ユーティリティ/ヘルパー
     // ==========================================
 
@@ -856,7 +1141,12 @@
     }
 
     function getSeasonLabel(key) {
-      const labels = { autumn: "秋(始動期)", winter: "冬(土台作り)", spring: "春(実戦期)", summer: "夏(最終調整)" };
+      const labels = { 
+        summer: "夏(試合なし・基礎)", 
+        autumn: "秋(11月から試合)", 
+        winter: "冬(冬の試合期)", 
+        spring: "春(5月末最後の総体)" 
+      };
       return labels[key] || key;
     }
 
@@ -884,17 +1174,17 @@
         navReviewPing.classList.add("hidden");
       }
 
-      // --- TAB SWITCH PANELS ---
-      const tabs = ["home", "schedule", "roadmap", "check"];
+      // --- TAB SWITCH PANELS (tabs配列に"chat"を追加) ---
+      const tabs = ["home", "schedule", "roadmap", "check", "annual", "chat"];
       tabs.forEach(t => {
         const section = document.getElementById(`tab-${t}`);
         const navBtn = document.getElementById(`nav-${t}`);
         if (state.currentTab === t) {
-          section.classList.remove("hidden");
-          navBtn.className = "flex flex-col items-center justify-center space-y-1 text-red-500";
+          if (section) section.classList.remove("hidden");
+          if (navBtn) navBtn.className = "flex flex-col items-center justify-center space-y-1 text-red-500";
         } else {
-          section.classList.add("hidden");
-          navBtn.className = "flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-gray-300";
+          if (section) section.classList.add("hidden");
+          if (navBtn) navBtn.className = "flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-gray-300";
         }
       });
 
@@ -1003,6 +1293,11 @@
         document.getElementById("roadmap-benchmark").textContent = roadmapData.benchmark;
       }
 
+      // --- ANNUAL TAB UPDATES ---
+      if (state.currentTab === "annual") {
+        renderAnnualSchedule();
+      }
+
       // --- CHECK TAB UPDATES ---
       if (state.currentTab === "check") {
         document.getElementById("check-drill-title").textContent = activeDrill.title;
@@ -1014,143 +1309,85 @@
     }
 
     // ==========================================
-    // 戦術盤 (SVG) レンダリングヘルパー
+    // 年間スケジュール (1ヶ月ごと) レンダリングヘルパー
     // ==========================================
-    function renderTacticalBoard(type) {
-      const container = document.getElementById("tactical-board-container");
+    function renderAnnualSchedule() {
+      const container = document.getElementById("annual-timeline-container");
       container.innerHTML = "";
 
-      const boardDiv = document.createElement("div");
-      boardDiv.className = "w-full bg-[#111827] border border-gray-700 rounded-xl p-4 overflow-hidden shadow-inner relative";
+      ANNUAL_SCHEDULE.forEach(item => {
+        // 現在の「注力季節（秋/冬/春/夏）」と一致している月かどうかを判定
+        const isActiveSeason = (item.season === state.season);
 
-      // タグ
-      const tag = document.createElement("div");
-      tag.className = "absolute top-2 left-3 bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] px-2 py-0.5 rounded font-mono uppercase tracking-widest";
-      tag.textContent = `TACTIC BOARD: ${type ? type.toUpperCase() : "GENERAL"}`;
-      boardDiv.appendChild(tag);
+        const card = document.createElement("div");
+        card.className = `relative pl-8 pb-4 transition-all duration-300 ${isActiveSeason ? 'scale-[1.01]' : 'opacity-60'}`;
 
-      // SVG本体
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("viewBox", "0 0 400 300");
-      svg.setAttribute("class", "w-full h-auto mt-4 max-h-[220px]");
+        // タイムラインの丸ポインタ (現在注力中の月は光るリングになる)
+        const pointer = document.createElement("div");
+        if (isActiveSeason) {
+          pointer.className = "absolute left-2 top-1.5 w-5 h-5 rounded-full bg-red-500 border-4 border-slate-950 flex items-center justify-center -translate-x-[2px] shadow-lg shadow-red-500/50 z-10";
+          pointer.innerHTML = `<span class="block w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>`;
+        } else {
+          pointer.className = "absolute left-2.5 top-2.5 w-3 h-3 rounded-full bg-slate-700 border-2 border-slate-950 z-10";
+        }
+        card.appendChild(pointer);
 
-      // 定義(マーカー矢印)
-      const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-      defs.innerHTML = `
-        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 1 L 10 5 L 0 9 z" fill="#fff" />
-        </marker>
-      `;
-      svg.appendChild(defs);
+        // カードコンテンツ本体
+        const contentBox = document.createElement("div");
+        contentBox.className = `p-4 rounded-xl border ${
+          isActiveSeason 
+            ? "bg-gradient-to-br from-[#1d1625] to-[#12182b] border-red-500/60 shadow-lg shadow-red-950/20" 
+            : "bg-[#111625] border-slate-800"
+        }`;
 
-      // コート背景
-      svg.innerHTML += `
-        <rect x="0" y="0" width="400" height="300" fill="#0f172a" rx="8" />
-        <line x1="200" y1="0" x2="200" y2="300" stroke="#475569" strokeWidth="2" strokeDasharray="5,5" />
-        <path d="M 0,220 C 50,220 120,190 120,150 C 120,110 50,80 0,80" fill="none" stroke="#38bdf8" strokeWidth="3" />
-        <path d="M 0,250 C 80,250 170,210 170,150 C 170,90 80,50 0,50" fill="none" stroke="#f59e0b" strokeWidth="2" strokeDasharray="6,4" />
-        <rect x="0" y="125" width="10" height="50" fill="none" stroke="#f43f5e" strokeWidth="3" />
-        <line x1="10" y1="125" x2="10" y2="175" stroke="#ffffff" strokeWidth="3" />
-      `;
+        // ヘッダー（月・バッジ・重点テーマ）
+        const headerDiv = document.createElement("div");
+        headerDiv.className = "flex items-center justify-between flex-wrap gap-1.5 mb-2";
 
-      // ドリル特性に応じたマーカー配置
-      if (type === "contact") {
-        svg.innerHTML += `
-          <circle cx="105" cy="150" r="10" fill="#f43f5e" stroke="#fff" stroke-width="1.5" />
-          <text x="101" y="154" fill="#fff" font-size="10" font-weight="bold">D</text>
-          <circle cx="140" cy="150" r="10" fill="#3b82f6" stroke="#fff" stroke-width="1.5" />
-          <text x="136" y="154" fill="#fff" font-size="10" font-weight="bold">O</text>
-          <path d="M 140,150 L 115,150" stroke="#eab308" stroke-width="2" marker-end="url(#arrow)" />
-          <path d="M 105,150 L 95,150" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,3" />
-          <circle cx="145" cy="142" r="4" fill="#eab308" />
-          <text x="160" y="145" fill="#94a3b8" font-size="11">オフェンス突破を</text>
-          <text x="160" y="160" fill="#f43f5e" font-size="11" font-weight="bold">胸(D)でコンタクト</text>
+        const titleSpan = document.createElement("span");
+        titleSpan.className = "flex items-center space-x-2";
+        titleSpan.innerHTML = `
+          <span class="text-xs font-black font-mono px-2 py-0.5 rounded bg-slate-800 text-white">${item.month}</span>
+          <span class="text-xs font-black ${isActiveSeason ? 'text-red-400' : 'text-gray-300'}">${item.theme}</span>
         `;
-      } else if (type === "slide") {
-        svg.innerHTML += `
-          <circle cx="100" cy="120" r="10" fill="#f43f5e" stroke="#fff" stroke-width="1.5" />
-          <text x="96" y="124" fill="#fff" font-size="10" font-weight="bold">D1</text>
-          <circle cx="100" cy="180" r="10" fill="#f43f5e" stroke="#fff" stroke-width="1.5" />
-          <text x="96" y="184" fill="#fff" font-size="10" font-weight="bold">D2</text>
-          <circle cx="145" cy="115" r="10" fill="#3b82f6" stroke="#fff" stroke-width="1.5" />
-          <text x="141" y="119" fill="#fff" font-size="10" font-weight="bold">O1</text>
-          <circle cx="135" cy="165" r="10" fill="#3b82f6" stroke="#fff" stroke-width="1.5" />
-          <text x="131" y="169" fill="#fff" font-size="10" font-weight="bold">O2</text>
-          <path d="M 100,120 Q 90,140 100,165" stroke="#a855f7" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrow)" />
-          <text x="65" y="145" fill="#a855f7" font-size="10">スライドフォロー</text>
-          <text x="160" y="115" fill="#94a3b8" font-size="10">O1カットイン誘発</text>
-          <text x="160" y="185" fill="#94a3b8" font-size="10">O2のクロスへ対応</text>
-        `;
-      } else if (type === "free-throw") {
-        svg.innerHTML += `
-          <circle cx="70" cy="120" r="8" fill="#f43f5e" stroke="#fff" />
-          <circle cx="70" cy="140" r="8" fill="#f43f5e" stroke="#fff" />
-          <circle cx="70" cy="160" r="8" fill="#f43f5e" stroke="#fff" />
-          <line x1="70" y1="110" x2="70" y2="170" stroke="#ef4444" stroke-width="2" />
-          <circle cx="130" cy="140" r="10" fill="#3b82f6" stroke="#fff" />
-          <text x="126" y="144" fill="#fff" font-size="10" font-weight="bold">O</text>
-          <circle cx="135" cy="135" r="3" fill="#eab308" />
-          <line x1="70" y1="140" x2="130" y2="140" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,2" />
-          <text x="90" y="133" fill="#94a3b8" font-size="9">3m確保</text>
-          <text x="160" y="240" fill="#eab308" font-size="11" font-weight="bold">クイックスタート阻止！</text>
-        `;
-      } else if (type === "fastbreak-1") {
-        svg.innerHTML += `
-          <circle cx="20" cy="150" r="10" fill="#10b981" stroke="#fff" stroke-width="1.5" />
-          <text x="13" y="154" fill="#fff" font-size="10" font-weight="bold">GK</text>
-          <circle cx="150" cy="45" r="10" fill="#3b82f6" stroke="#fff" stroke-width="1.5" />
-          <text x="145" y="49" fill="#fff" font-size="10" font-weight="bold">LW</text>
-          <path d="M 25,140 Q 70,60 140,48" stroke="#eab308" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow)" />
-          <text x="45" y="85" fill="#eab308" font-size="10" transform="rotate(-30 45 85)">1.5秒ファーストパス</text>
-          <path d="M 150,45 L 230,45" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow)" />
-          <text x="170" y="38" fill="#3b82f6" font-size="10">全力スプリント</text>
-        `;
-      } else if (type === "fastbreak-2") {
-        svg.innerHTML += `
-          <circle cx="230" cy="45" r="10" fill="#3b82f6" stroke="#fff" />
-          <text x="223" y="49" fill="#fff" font-size="9" font-weight="bold">LW</text>
-          <circle cx="235" cy="38" r="3" fill="#eab308" />
-          <circle cx="160" cy="150" r="10" fill="#3b82f6" stroke="#fff" />
-          <text x="153" y="154" fill="#fff" font-size="9" font-weight="bold">CB</text>
-          <path d="M 230,45 L 170,140" stroke="#eab308" stroke-width="2" stroke-dasharray="3,2" marker-end="url(#arrow)" />
-          <path d="M 160,150 L 110,150" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow)" />
-          <circle cx="95" cy="140" r="8" fill="#f43f5e" stroke="#fff" />
-          <circle cx="95" cy="165" r="8" fill="#f43f5e" stroke="#fff" />
-          <text x="175" y="110" fill="#eab308" font-size="10">2次速攻パス</text>
-          <text x="175" y="170" fill="#3b82f6" font-size="10">トレイルラン(走り込み)</text>
-        `;
-      } else if (type === "offense-1") {
-        svg.innerHTML += `
-          <circle cx="170" cy="100" r="10" fill="#3b82f6" stroke="#fff" />
-          <text x="163" y="104" fill="#fff" font-size="9">LB</text>
-          <circle cx="180" cy="150" r="10" fill="#3b82f6" stroke="#fff" />
-          <text x="173" y="154" fill="#fff" font-size="9">CB</text>
-          <path d="M 170,100 Q 140,120 120,110" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
-          <path d="M 180,150 Q 150,110 135,130" stroke="#38bdf8" stroke-width="2" stroke-dasharray="2,2" />
-          <circle cx="100" cy="115" r="9" fill="#f43f5e" stroke="#fff" />
-          <text x="96" y="119" fill="#fff" font-size="8">D</text>
-          <path d="M 100,115 L 85,130" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="2,2" />
-          <text x="195" y="115" fill="#38bdf8" font-size="11">パラレル崩し</text>
-        `;
-      } else if (type && type.startsWith("review")) {
-        svg.innerHTML += `
-          <circle cx="120" cy="150" r="12" fill="#eab308" stroke="#fff" stroke-width="2" />
-          <text x="113" y="154" fill="#1e293b" font-size="11" font-weight="bold">復習</text>
-          <circle cx="180" cy="150" r="10" fill="#3b82f6" stroke="#fff" />
-          <text x="176" y="154" fill="#fff" font-size="10">O</text>
-          <path d="M 170,150 L 135,150" stroke="#475569" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrow)" />
-          <text x="150" y="190" fill="#94a3b8" font-size="11" text-anchor="middle">基本に立ち戻って徹底矯正</text>
-        `;
-      }
+        headerDiv.appendChild(titleSpan);
 
-      // 凡例表示追加
-      boardDiv.appendChild(svg);
-      const legend = document.createElement("div");
-      legend.className = "text-right text-[10px] text-gray-500 mt-1";
-      legend.textContent = "※青=OF / 赤=DF / 黄=ボール / 緑=GK";
-      boardDiv.appendChild(legend);
+        if (isActiveSeason) {
+          const badge = document.createElement("span");
+          badge.className = "bg-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider animate-pulse shrink-0";
+          badge.textContent = "現在注力すべき期";
+          headerDiv.appendChild(badge);
+        } else {
+          const badge = document.createElement("span");
+          badge.className = "bg-slate-800 text-gray-400 text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase shrink-0";
+          badge.textContent = `${getSeasonLabel(item.season).split("(")[0]}`;
+          headerDiv.appendChild(badge);
+        }
+        contentBox.appendChild(headerDiv);
 
-      container.appendChild(boardDiv);
+        // 説明文
+        const descP = document.createElement("p");
+        descP.className = "text-[11px] text-gray-400 leading-relaxed mb-3";
+        descP.textContent = item.desc;
+        contentBox.appendChild(descP);
+
+        // 到達マイルストーン目標
+        const goalDiv = document.createElement("div");
+        goalDiv.className = `p-2.5 rounded-lg text-[10px] leading-relaxed flex items-start gap-2 ${
+          isActiveSeason ? 'bg-red-950/35 text-red-300 border border-red-900/30' : 'bg-slate-900/50 text-gray-400'
+        }`;
+        goalDiv.innerHTML = `
+          <span class="text-xs shrink-0">${isActiveSeason ? "🔥" : "🎯"}</span>
+          <div>
+            <span class="font-bold block text-[9px] text-gray-300">今月の到達マイルストーン:</span>
+            <span>${item.milestone}</span>
+          </div>
+        `;
+        contentBox.appendChild(goalDiv);
+
+        card.appendChild(contentBox);
+        container.appendChild(card);
+      });
     }
   </script>
 </body>
